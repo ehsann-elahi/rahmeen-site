@@ -79,6 +79,8 @@ function route(focusPage = false) {
 document.addEventListener('click', event => {
   if(event.target.closest('.skip-link')) { event.preventDefault(); page.focus(); page.scrollIntoView({behavior:'instant'}); return; }
   if(event.target.closest('.scroll-cue')) { event.preventDefault(); document.querySelector('#expression')?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'}); return; }
+  const sameRoute = event.target.closest('a[href^="#/"]');
+  if(sameRoute && sameRoute.getAttribute('href') === location.hash) { event.preventDefault(); route(true); return; }
   if (event.target.closest('[data-open-menu]')) document.querySelector('#menu-dialog').showModal();
   if (event.target.closest('[data-close-menu]')) document.querySelector('#menu-dialog').close();
   if (event.target.closest('[data-open-search]')) commerce.openSearch();
