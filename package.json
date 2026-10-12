@@ -1,0 +1,11 @@
+{
+  "name": "rahmeen-in-bloom",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "RAHMEEN editorial storefront demonstration",
+  "scripts": {
+    "dev": "node server.mjs",
+    "check": "node --check dist/main.js && node --check dist/commerce.js && node --check dist/catalogue.js"
+  }
+}
