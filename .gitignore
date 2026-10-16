@@ -1,4 +1,57 @@
+# Dependencies and local tool caches
 node_modules/
 .sites-runtime/
 .sites-checkout*/
+__pycache__/
+*.py[cod]
+
+# Server credentials and environment settings (keep safe examples)
+config.php
+.env
+.env.*
+!.env.example
+!.env.sample
+.ssh/
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+
+# Private application data, sessions, orders, and local test databases
+storage/
+.test-storage*/
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*
+*.db
+*.db-*
+*.sql
+*.sql.gz
+
+# Runtime product uploads; retain the access-control file
+dist/uploads/*
+!dist/uploads/.htaccess
+
+# Generated deployment packages and backup archives
+.hostinger-package*/
+release/
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.bak
+
+# Logs, local editor state, and operating-system files
 *.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# dist/ is the deployable storefront source and MUST remain tracked.
+# config.example.php and app/seed-products.json are safe templates.

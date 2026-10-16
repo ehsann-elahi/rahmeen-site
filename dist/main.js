@@ -1,17 +1,29 @@
-import { products } from './catalogue.js';
+import { products, loadCatalogue, storeSettings, escapeHTML, safeImage } from './catalogue.js';
 import { productCard, renderShop, renderProduct, renderWishlist, initCommerce } from './commerce.js';
+import { initOrderTracking } from './order-tracking.js';
 
 const flower = (className = '') => `<img class="${className}" src="./assets/flower.svg" alt="" width="100" height="100">`;
 const arrow = '<span aria-hidden="true">↗</span>';
 const page = document.querySelector('#page-content');
+page.innerHTML = `<div class="page-loading" role="status">${flower()}<p>Opening your wardrobe…</p></div>`;
+await loadCatalogue();
 const commerce = initCommerce();
+initOrderTracking();
+document.querySelectorAll('[data-store-announcement]').forEach(el => { if (storeSettings.announcement) el.textContent = storeSettings.announcement; });
+if (!storeSettings.available) {
+  const notice = document.createElement('p');
+  notice.className = 'catalogue-offline';
+  notice.setAttribute('role', 'status');
+  notice.textContent = 'The store is temporarily offline. You can browse the sample collection; ordering is unavailable.';
+  page.before(notice);
+}
 let revealObserver;
 
 function homePage() {
   return `
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy"><div class="hero-kicker"><span class="eyebrow">THE BLOOM EDIT</span><span class="edition-mark">VOL. 01 / 2026</span></div><h1 id="hero-title">Wear your<br>own <em>story.</em></h1><p>For the everyday. For the extraordinary.<br>For every version of you.</p><a class="button coral-button" href="#/shop">Explore the Collection ${arrow}</a><div class="hero-bottom"><span class="eyebrow">ROOTED IN CRAFT. MADE FOR YOU.</span><a href="#expression" class="scroll-cue" aria-label="Scroll to collections">↓</a></div></div>
-    <div class="hero-visual"><img class="hero-photo" src="./assets/hero.webp" alt="Woman in a flowing coral embroidered Pakistani ensemble in sunlit ivory architecture" width="1024" height="1536" fetchpriority="high"><span class="campaign-caption">IN FULL BLOOM</span><span class="image-index">01 — 03</span><a class="hero-detail" href="#/product/meher-bloom"><img src="./assets/textile.webp" alt="A closer look at coral floral embroidery" width="600" height="700"><span>Beauty is in the details ${arrow}</span></a></div>
+    <div class="hero-visual"><img class="hero-photo" src="./assets/hero.webp" alt="Woman in a flowing coral embroidered Pakistani ensemble in sunlit ivory architecture" width="1024" height="1536" fetchpriority="high"><span class="campaign-caption">IN FULL BLOOM</span><span class="image-index">01 — 03</span><a class="hero-detail" href="${products.some(p => p.id === 'meher-bloom') ? '#/product/meher-bloom' : '#/shop'}"><img src="./assets/textile.webp" alt="A closer look at coral floral embroidery" width="600" height="700"><span>Beauty is in the details ${arrow}</span></a></div>
     ${flower('hero-flower')}
   </section>
   <div class="brand-strip"><span>CONTEMPORARY SILHOUETTES</span>${flower()}<span>COLOUR WITH CHARACTER</span>${flower()}<span>DETAILS TO FALL FOR</span>${flower()}<span>A WARDROBE IN BLOOM</span></div>
@@ -22,7 +34,7 @@ function homePage() {
       <a href="#/shop/Festive" class="collection-card collection-occasion reveal"><div class="collection-image"><img src="./assets/occasion.webp" alt="A black embroidered occasion ensemble with delicate gold details" width="1024" height="1536" loading="lazy"><span class="collection-number">03</span></div><div class="collection-label"><div><span class="eyebrow">FOR MOMENTS THAT MATTER</span><h3>Occasion</h3></div><span class="circle-arrow">↗</span></div></a>
     </div>
   </section>
-  <section class="arrivals section-space" aria-labelledby="arrivals-title"><div class="section-heading reveal"><div><span class="eyebrow">FRESH PERSPECTIVES</span><h2 id="arrivals-title">The latest <em>chapter.</em></h2></div><a class="text-link" href="#/shop">Discover all new arrivals ${arrow}</a></div><div class="home-products">${products.slice(0, 4).map(productCard).join('')}</div><p class="catalogue-note">An imagined collection. Explore our demonstration pieces.</p></section>
+  <section class="arrivals section-space" aria-labelledby="arrivals-title"><div class="section-heading reveal"><div><span class="eyebrow">FRESH PERSPECTIVES</span><h2 id="arrivals-title">The latest <em>chapter.</em></h2></div><a class="text-link" href="#/shop">Discover all new arrivals ${arrow}</a></div><div class="home-products">${[...products.filter(p => p.featured), ...products.filter(p => !p.featured)].slice(0, 4).map(productCard).join('') || '<p>New pieces are on their way.</p>'}</div>${storeSettings.demoMode ? '<p class="catalogue-note">An imagined collection. Explore our demonstration pieces.</p>' : ''}</section>
   <section class="editorial section-space" id="editorial" aria-labelledby="editorial-title"><div class="editorial-intro reveal"><span class="eyebrow">THE RAHMEEN NOTEBOOK / NO. 01</span><h2 id="editorial-title">The art of<br>getting <em>dressed.</em></h2><p>A silhouette that moves with you. A colour that feels like you. Sometimes, the smallest detail tells the most beautiful story.</p><a class="text-link" href="#/story">Inside our world ${arrow}</a>${flower('editorial-flower')}</div><div class="editorial-collage"><div class="editorial-main reveal"><img src="./assets/sage.webp" alt="A softly sculpted sage outfit with a flowing dupatta" width="1024" height="1536" loading="lazy"><span class="vertical-caption">01 / THE LANGUAGE OF SILHOUETTE</span></div><div class="editorial-detail reveal"><img src="./assets/textile.webp" alt="Fine floral stitching across a sunlit coral textile" width="700" height="700" loading="lazy"><span>02 / A CLOSER FEELING</span></div><span class="editorial-handwritten">Made of little things.</span></div></section>
   <section class="bloom-interlude" aria-label="Colour in full bloom"><div class="bloom-mask"><img src="./assets/hero.webp" alt="Coral fabric, expressive movement and warm afternoon light" width="1536" height="1024" loading="lazy"></div><div class="bloom-words"><span class="eyebrow">COLOUR OUTSIDE THE LINES.</span><p>Come into <em>bloom.</em></p></div></section>
   <section class="shop-look section-space" aria-labelledby="look-title"><div class="look-image reveal"><img src="./assets/hero.webp" alt="The complete Meher coral look with an embroidered kurta and sheer dupatta" width="1024" height="1536" loading="lazy"><button class="look-hotspot hotspot-one" data-look="meher-bloom" aria-label="Shop the coral embroidered ensemble"><span>+</span></button><button class="look-hotspot hotspot-two" data-look="petal-dupatta" aria-label="Shop the coral dupatta"><span>+</span></button><span class="look-hint">TAP A DETAIL. MAKE IT YOURS.</span></div><div class="look-copy reveal"><span class="eyebrow">AN OUTFIT. ENDLESS POSSIBILITIES.</span><h2 id="look-title">One look.<br><em>Your way.</em></h2><p>Light layers. Thoughtful details.<br>A little room for your own signature.</p><div id="look-selection" aria-live="polite"></div><a href="#/shop" class="text-link">Meet the whole collection ${arrow}</a></div></section>
@@ -31,9 +43,9 @@ function homePage() {
 
 const info = {
   contact: ['Let’s stay close.', 'The RAHMEEN contact and social channels will be added when the store launches. This preview does not connect to customer support or official social accounts. In the meantime, discover the collection and save the pieces you love.'],
-  shipping: ['Good things take care.', 'This storefront is an interactive demonstration. Checkout, shipping and returns are not yet available. Delivery regions, charges, dispatch times and the final return policy will be published before orders open.'],
+  shipping: ['Good things take care.', `Delivery within Pakistan is ${Number(storeSettings.shippingFee) === 0 ? 'complimentary' : 'PKR ' + Number(storeSettings.shippingFee).toLocaleString('en-PK')} per order. Pay cash on delivery. ${escapeHTML(storeSettings.deliveryNote || 'Delivery times will be confirmed when your order is reviewed.')} ${escapeHTML(storeSettings.returnsNote || 'The final return policy will be provided before the store launches.')} ${storeSettings.demoMode ? 'The store is currently in demo mode: orders are saved for testing and will not be fulfilled.' : ''}`],
   care: ['Love your clothes longer.', 'Use the garment’s sewn-in care label as your first guide. As a general starting point, wash similar colours separately, avoid prolonged direct sunlight when drying, and use a pressing cloth around embroidery. The fabric and care notes on these demonstration products are illustrative and must be confirmed against real stock.'],
-  'about-preview': ['A wardrobe, imagined.', 'This is an editable RAHMEEN storefront demonstration. Product names, pricing, fabric details and size measurements are sample data. Campaign and product visuals are AI-generated concepts, not photographs of available inventory. The original RAHMEEN logo is displayed unchanged; the supporting flower graphics are inspired by its petals. Bag and wishlist are saved on your device. No payments, orders or email subscriptions are processed.'],
+  'about-preview': ['A wardrobe, imagined.', 'This is an editable RAHMEEN storefront demonstration. Product names, pricing, fabric details and size measurements are sample data. Campaign and product visuals are AI-generated concepts, not photographs of available inventory. The original RAHMEEN logo is displayed unchanged; the supporting flower graphics are inspired by its petals. Bag and wishlist are saved on your device. Orders placed in demo mode are saved for testing and will not be fulfilled. No online payments or email subscriptions are processed.'],
   'size-guide': ['Find your fit.', 'Our demonstration size guide uses body measurements in inches. XS: bust 32, S: 34, M: 36, L: 38, XL: 40. Measurements are illustrative; a verified size chart must be supplied for each real garment before ordering is enabled. Open any product’s size guide for the complete chart.']
 };
 
@@ -43,7 +55,8 @@ function renderLook(id = 'meher-bloom') {
   const target = document.querySelector('#look-selection');
   if (!target) return;
   const p = products.find(p => p.id === id) || products[0];
-  target.innerHTML = `<a class="look-product" href="#/product/${p.id}"><img src="${p.image}" alt="${p.name}" width="100" height="120" loading="lazy"><div><span class="eyebrow">THE BLOOM EDIT</span><h3>${p.name}</h3><span>PKR ${p.price.toLocaleString('en-PK')}</span></div><span class="circle-arrow">↗</span></a>`;
+  if (!p) { target.innerHTML = '<p>Our next chapter is coming soon.</p>'; return; }
+  target.innerHTML = `<a class="look-product" href="#/product/${encodeURIComponent(p.id)}"><img src="${escapeHTML(safeImage(p.image))}" alt="${escapeHTML(p.name)}" width="100" height="120" loading="lazy"><div><span class="eyebrow">THE BLOOM EDIT</span><h3>${escapeHTML(p.name)}</h3><span>PKR ${p.price.toLocaleString('en-PK')}</span></div><span class="circle-arrow">↗</span></a>`;
   document.querySelectorAll('[data-look]').forEach(el => el.setAttribute('aria-pressed', String(el.dataset.look === id)));
 }
 
@@ -67,6 +80,7 @@ function route(focusPage = false) {
   const titles = {shop:'The collection',product:'The details',wishlist:'Your wishlist',story:'Our story',info:'The thoughtful details'};
   document.title = `${type === 'product' ? (products.find(p=>p.id===parts[1])?.name || 'The details') : titles[type] || 'A wardrobe in bloom'} — RAHMEEN`;
   document.querySelectorAll('[data-nav]').forEach(el => { const active = el.dataset.nav === (type === 'wishlist' ? 'wishlist' : ['shop','product'].includes(type) ? 'shop' : !type ? 'home' : ''); el.classList.toggle('active',active); if(active) el.setAttribute('aria-current','page'); else el.removeAttribute('aria-current'); });
+  document.querySelectorAll('.desktop-collections a').forEach(el => { const active = el.getAttribute('href') === location.hash; if (active) el.setAttribute('aria-current', 'page'); else el.removeAttribute('aria-current'); });
   if (document.querySelector('#menu-dialog').open) document.querySelector('#menu-dialog').close();
   commerce.refresh();
   renderLook();

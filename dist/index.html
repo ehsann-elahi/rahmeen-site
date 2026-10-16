@@ -17,9 +17,12 @@
 <body>
   <a class="skip-link" href="#page-content">Skip to content</a>
   <header class="site-header" id="site-header">
-    <button class="menu-trigger plain-button" data-open-menu aria-label="Open menu"><img src="./assets/flower.svg" alt="" width="19" height="19"><span>Menu</span></button>
-    <a class="brand" href="#/" aria-label="RAHMEEN home"><img src="./assets/logo.png" alt="RAHMEEN" width="1557" height="1529"></a>
-    <div class="header-actions"><button class="plain-button" data-open-search>Search <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><button class="plain-button" data-open-bag>Bag <span class="bag-number" data-bag-count>0</span></button></div>
+    <div class="desktop-announcement"><p><span data-store-announcement>A wardrobe in bloom. Discover our latest chapter.</span> <a href="#/shop">Shop now.</a></p><button data-track-order>Track order</button></div>
+    <div class="desktop-header-row">
+      <a class="brand" href="#/" aria-label="RAHMEEN home"><img src="./assets/logo.png" alt="RAHMEEN" width="1557" height="1529"></a>
+      <nav class="desktop-collections" aria-label="Shop collections"><a href="#/shop" class="desktop-new-in">New In</a><a href="#/shop/Ready%20to%20Wear">Ready to Wear</a><a href="#/shop/Unstitched">Unstitched</a><a href="#/shop/Festive">Festive</a><a href="#/story">Our Story</a></nav>
+      <div class="header-actions"><button class="header-icon" data-open-search aria-label="Search" title="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button><a class="header-icon" href="#/wishlist" aria-label="Wishlist" title="Wishlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 5c-2-2-5-2-8 1-3-3-6-3-8-1-3 3-1 6 1 8l7 7 7-7c2-2 4-5 1-8z"/></svg></a><button class="header-icon header-cart" data-open-bag aria-label="Open shopping bag" title="Shopping bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16l1 14H3zM8 8V6a4 4 0 0 1 8 0v2"/></svg><span class="bag-number" data-bag-count>0</span></button></div>
+    </div>
   </header>
   <main id="page-content" tabindex="-1"></main>
   <footer class="site-footer">
@@ -29,7 +32,7 @@
     <div class="footer-grid">
       <div class="newsletter"><h3>Good things are on the horizon.</h3><p>New collections, fresh inspiration. A little RAHMEEN in your inbox.</p><form id="newsletter-form"><label class="sr-only" for="newsletter-email">Email address</label><div class="newsletter-field"><input type="email" id="newsletter-email" name="email" placeholder="Your email address" autocomplete="email" required><button type="submit" aria-label="Join newsletter"><span aria-hidden="true">↗</span></button></div><small id="newsletter-status" role="status">Demo signup. No email will be sent.</small></form></div>
       <details class="footer-links" open><summary>Explore <span>+</span></summary><a href="#/shop">New In</a><a href="#/shop/Ready%20to%20Wear">Ready to Wear</a><a href="#/shop/Unstitched">Unstitched</a><a href="#/shop/Festive">Festive</a></details>
-      <details class="footer-links" open><summary>Here to help <span>+</span></summary><a href="#/info/contact">Contact & social</a><a href="#/info/shipping">Shipping & returns</a><a href="#/info/size-guide">Size guide</a><a href="#/info/care">Fabric care</a></details>
+      <details class="footer-links" open><summary>Here to help <span>+</span></summary><button class="footer-track" data-track-order>Track your order</button><a href="#/info/contact">Contact & social</a><a href="#/info/shipping">Shipping & returns</a><a href="#/info/size-guide">Size guide</a><a href="#/info/care">Fabric care</a></details>
     </div>
     <div class="footer-bottom"><a class="footer-brand" href="#/" aria-label="RAHMEEN home"><img src="./assets/logo.png" alt="RAHMEEN" width="1557" height="1529" loading="lazy"></a><p>© 2026 RAHMEEN <span class="dot">·</span> An independent expression.</p><a href="#/info/about-preview">About this preview</a><span>PAKISTAN · PKR</span></div>
   </footer>

@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "RAHMEEN editorial storefront demonstration",
+  "description": "RAHMEEN storefront and product/order management",
   "scripts": {
     "dev": "node server.mjs",
-    "check": "node --check dist/main.js && node --check dist/commerce.js && node --check dist/catalogue.js"
+    "check": "node --check server.mjs && node --check dist/main.js && node --check dist/commerce.js && node --check dist/catalogue.js && node --check dist/store-api.js && node --check dist/order-tracking.js && node --check dist/admin/admin.js"
   }
 }
