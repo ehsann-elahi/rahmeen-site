@@ -6,6 +6,8 @@ Deployed application commit: 9fb000e1eecbafea3ddc642e62f8093255ae09b7.
 
 Latest recheck (2026-10-17): Hostinger's API confirms the website is enabled and the new storefront files remain installed. However, public HTTPS, direct-origin HTTPS and SSH connections timed out from this environment. Current public availability could not be reconfirmed. No deployment files were changed during this recheck. Investigate network/hosting reachability before enabling real sales.
 
+Country access correction (2026-10-17): With explicit user approval, switched Hostinger CDN from "Allow only specific countries" (empty allow-list) to "Block specific countries" (empty block-list). Hostinger confirmed "Website allows traffic from any country at the moment" and no IP addresses are blocked. Requested a server/CDN cache purge. The immediate public browser and HTTPS retests still timed out; removing the restriction has not yet established restored availability.
+
 Completed on Hostinger:
 - Confirmed active Business Web Hosting, PHP 8.3 and HTTPS.
 - Pushed the application source to the repository's main branch.
