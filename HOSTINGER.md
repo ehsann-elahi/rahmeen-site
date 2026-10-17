@@ -51,7 +51,7 @@ Use hosting backups for the MySQL database and `public_html/uploads` together; r
 
 The local server is for development only. Do not run `npm run dev` or PHP's built-in server as the production service. Hostinger's configured PHP web server serves `public_html`.
 
-## Verification still needed on Hostinger
+## Deployment verification
 
-Local tests cover SQLite, HTTP behaviour and an isolated MariaDB 10.4 instance using the MySQL driver. The actual hosting database connection, permissions, HTTPS cookie behaviour, upload limits and Apache/LiteSpeed configuration must still be verified during deployment. No Hostinger account has been connected or changed by this task.
+The store is deployed at https://rahmeenarts.store/ on Hostinger PHP 8.3 with a separate MySQL database. Live checkout, order tracking, HTTPS redirection, session-cookie protections and private-file isolation were verified. See DEPLOYMENT-STATUS.md for the deployed commit and remaining acceptance checks. Owner-account setup was deferred by the user; authenticated dashboard and upload checks remain pending. GitHub pushes do not automatically deploy.
 
