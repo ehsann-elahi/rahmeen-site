@@ -4,6 +4,8 @@ Live store: https://rahmeenarts.store/
 Repository: https://github.com/ehsann-elahi/rahmeen-site
 Deployed application commit: 9fb000e1eecbafea3ddc642e62f8093255ae09b7.
 
+Latest recheck (2026-10-17): Hostinger's API confirms the website is enabled and the new storefront files remain installed. However, public HTTPS, direct-origin HTTPS and SSH connections timed out from this environment. Current public availability could not be reconfirmed. No deployment files were changed during this recheck. Investigate network/hosting reachability before enabling real sales.
+
 Completed on Hostinger:
 - Confirmed active Business Web Hosting, PHP 8.3 and HTTPS.
 - Pushed the application source to the repository's main branch.
